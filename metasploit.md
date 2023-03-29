@@ -109,5 +109,15 @@ chmod +x create_cronjob.sh
 
 Run the script with ./create_cronjob.sh. This will create the benign script (benign_cronjob.sh), make it executable, and set up a cron job to run it every minute.
 
-Monitor the /tmp/cronjob.log file for updates by running tail -f /tmp/cronjob.log.
+```
+sh create_cronjob.sh
+```
+
+Monitor the /tmp/cronjob.log file for updates by running cat /tmp/cronjob.log.
+
+```
+cat /tmp/cronjob.log
+```
+
+
 
