@@ -21,7 +21,7 @@ Find the IP address of the Metasploitable virtual machine. You can do this by lo
 From your Metasploit system, run a vulnerability scan against the Metasploitable VM using a tool like Nmap. This will help you identify open ports and services.
 
 ```
-nmap -sV -p- <Metasploitable_IP>
+nmap -sV -p- 192.168.101.52
 ```
 
 ### 5. Select a vulnerability:
@@ -45,7 +45,7 @@ use exploit/<exploit_module_name>
 Set the target's IP address:
 
 ```
-set RHOSTS <Metasploitable_IP>
+set RHOSTS 192.168.101.52
 ```
 
 Configure any additional options required for the exploit. You can view these options by typing "show options" in the Metasploit console.
