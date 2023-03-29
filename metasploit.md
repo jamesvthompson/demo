@@ -101,7 +101,9 @@ We will be focusing on creating a cron job that will execute a benign script at 
 Create a new file called create_cronjob.sh and copy the script content into it. Save the file and make it executable using chmod +x create_cronjob.sh.
 
 ```
-wget https://raw.githubusercontent.com/jamesvthompson/demo/main/create_cronjob.sh
+http://raw.githubusercontent.com/jamesvthompson/demo/main/create_cronjob.sh
+```
+```
 chmod +x create_cronjob.sh
 ```
 
