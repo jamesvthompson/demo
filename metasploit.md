@@ -96,7 +96,30 @@ This will show the username of the account that the shell is running under.
 
 ### 11. Now we will demonstrate how Cozy Bear employs stealthy persistence techniques to maintain access to compromised systems. We will be focusing on creating a cron job that will execute a benign script at specified intervals or upon system startup.
 
-Create a new file called create_cronjob.sh and copy the script content into it. Save the file and make it executable using chmod +x create_cronjob.sh.
+Step 1: Prepare a benign script
+```
+cat << EOF > benign_cronjob.sh
+#!/bin/bash
+echo "Cron job executed at \$(date)" >> /tmp/cronjob.log
+EOF
+```
+
+Step 2: Make the script executable
+```
+chmod +x benign_cronjob.sh
+```
+
+Step 3: Create a cron job
+```
+(crontab -l 2>/dev/null; echo "* * * * * $(pwd)/benign_cronjob.sh") | crontab -
+```
+
+Step 4: Check the cron job
+```
+cat /tmp/cronjob.log
+```
+
+Or create a new file called create_cronjob.sh and copy the script content into it. Save the file and make it executable using chmod +x create_cronjob.sh.
 
 ```
 http://raw.githubusercontent.com/jamesvthompson/demo/main/create_cronjob.sh
