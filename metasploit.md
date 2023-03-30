@@ -124,9 +124,10 @@ Make sure that the remote machine has an SSH server running and that you have th
 
 Use the scp command on the local machine to transfer the file. Replace <remote_user>, <remote_ip>, and <remote_directory> with the appropriate values for your setup:
 
-``
+```
 scp /tmp/cronjob.log kali@192.168.101.51:/tmp/received_cronjob.log
 ```
+
 sshpass -p 'kali' scp /tmp/cronjob.log kali@192.168.101.51:/tmp/received_cronjob.log
 
 curl -X POST -H "Content-Type: application/octet-stream" --data-binary "@/tmp/cronjob.log" http://192.168.101.51:8080/upload
